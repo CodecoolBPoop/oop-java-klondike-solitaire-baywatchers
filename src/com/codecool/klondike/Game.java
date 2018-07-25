@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 
 public class Game extends Pane {
 
@@ -107,6 +108,11 @@ public class Game extends Pane {
 
     public void refillStockFromDiscard() {
         //TODO
+        //NOT reshuffled yet
+        for(int i = discardPile.numOfCards(); i > 0; i--) {
+            discardPile.getTopCard().moveToPile(stockPile);
+            stockPile.getTopCard().flip();
+        }
         System.out.println("Stock refilled from discard pile.");
     }
 
@@ -182,13 +188,28 @@ public class Game extends Pane {
 
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
-        //TODO
+        shuffleCards();
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j <= i ; j++) {
+                Card card = deckIterator.next();
+                if (j == i ) {
+                    card.flip();
+                }
+                tableauPiles.get(i).addCard(card);
+                addMouseEventHandlers(card);
+                getChildren().add(card);
+            }
+        }
         deckIterator.forEachRemaining(card -> {
             stockPile.addCard(card);
             addMouseEventHandlers(card);
             getChildren().add(card);
         });
 
+    }
+
+    public void shuffleCards() {
+        Collections.shuffle(deck);
     }
 
     public void setTableBackground(Image tableBackground) {
