@@ -108,6 +108,11 @@ public class Game extends Pane {
 
     public void refillStockFromDiscard() {
         //TODO
+        //NOT reshuffled yet
+        for(int i = discardPile.numOfCards(); i > 0; i--) {
+            discardPile.getTopCard().moveToPile(stockPile);
+            stockPile.getTopCard().flip();
+        }
         System.out.println("Stock refilled from discard pile.");
     }
 
