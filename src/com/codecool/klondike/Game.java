@@ -79,12 +79,15 @@ public class Game extends Pane {
             return;
         Card card = (Card) e.getSource();
         Pile pile = getValidIntersectingPile(card, tableauPiles);
+        if (pile == null) {
+            pile = getValidIntersectingPile(card, foundationPiles);
+        }
         //TODO
         if (pile != null) {
             handleValidMove(card, pile);
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
-            draggedCards = null;
+            draggedCards = FXCollections.observableArrayList();
         }
     };
 
@@ -115,11 +118,35 @@ public class Game extends Pane {
         }
         System.out.println("Stock refilled from discard pile.");
     }
-
+    /*
     public boolean isMoveValid(Card card, Pile destPile) {
         //TODO
+        System.out.println(card.getRank());
+        System.out.println(card.getSuit());
         return true;
+    }*/
+
+    public boolean isMoveValid(Card card, Pile destPile) {
+        if (destPile.getPileType() == Pile.PileType.FOUNDATION && destPile.isEmpty() && card.getRank() == 1 )  {
+            return true;
+        }
+        else if (!destPile.isEmpty() && destPile.getPileType() == Pile.PileType.FOUNDATION && card.isSameSuit(card, destPile.getTopCard())
+                && destPile.getTopCard().getRank() +1 == card.getRank())   {
+            return true;
+        }
+
+        else if (destPile.getPileType() == Pile.PileType.TABLEAU && destPile.isEmpty() && card.getRank() == 13 ) {
+            return true;
+        }
+        else if (!destPile.isEmpty() && destPile.getPileType() == Pile.PileType.TABLEAU && card.isOppositeColor(card, destPile.getTopCard())
+                && destPile.getTopCard().getRank() -1 == card.getRank())  {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
