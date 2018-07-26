@@ -18,6 +18,25 @@ public class Card extends ImageView {
     private Pile containingPile;
     private DropShadow dropShadow;
 
+    enum Suits {
+        
+        HEARTS(1),
+        DIAMONDS(2),
+        SPADES(3),
+        CLUBS(4);
+
+        public int number;
+
+        Suits(int n) {
+            number = n;
+        }
+
+        int getSuit {
+            return number;
+        }
+    }
+
+
     static Image cardBackImage;
     private static final Map<String, Image> cardFaceImages = new HashMap<>();
     public static final int WIDTH = 150;
@@ -78,7 +97,7 @@ public class Card extends ImageView {
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        //TODO
+
         return true;
     }
 
@@ -124,3 +143,4 @@ public class Card extends ImageView {
     }
 
 }
+
