@@ -155,6 +155,7 @@ public class Game extends Pane {
                     isMoveValid(card, pile))
                 result = pile;
         }
+
         return result;
     }
 
